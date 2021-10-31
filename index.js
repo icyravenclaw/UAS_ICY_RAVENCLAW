@@ -1,37 +1,25 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const layouts = require('express-ejs-layouts');
+const app = express();
 
-app.set('view engine', 'ejs');
-app.use(express.static('public')); //untuk serve .css, .js, images dari folder /public
-app.use(bodyParser.urlencoded());
-//layouts
+app.use(express.static('public'));
+app.set ('view engine', 'ejs');
 
-app.use(session({
+app.use(layouts);
+app.set('layout','Pages/login.ejs');
+app.use(session ({
     secret: '123asd21asg45',
 }))
 
-//routes
-const homeRoute = require('./routes/home');
-app.use('/', homeRoute)
-const authRoute = require('./routes/auth');
-app.use('/auth', authRoute);
+const indexRouter = require('./routes/home');
+const { urlencoded } = require('body-parser');
+app.use('/',indexRouter);
 
-// app.get('/', (req,res) => {
-//     res.send('Hello World!');
-// })
+const LoginRouter = require('./routes/auth');
+app.use('/auth',LoginRouter);
 
-// app.get('/fti', (req,res) => {
-//     res.send('ini fti asd');
-// });
-
-// app.get('/users/:userid', (req,res) => {
-//     const users = ['1','2','3','4','5','6'];
-//     res.send(users[req.params.userid]);
-// })
-
-
-app.listen('4000', () => {
-    console.log('Server is active');
-});
+app.listen('4000',() => {
+    console.log('active')
+})
