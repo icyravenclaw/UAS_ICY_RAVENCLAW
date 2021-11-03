@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const mongoose = require('mongoose')
 
 app.set('view engine', 'ejs');
 app.use(express.static('public')); //untuk serve .css, .js, images dari folder /public
@@ -11,6 +12,17 @@ app.use(bodyParser.urlencoded());
 app.use(session({
     secret: '123asd21asg45',
 }))
+
+mongoose.connect(('mongodb+srv://ICY:ICY@cluster0.c2p5x.mongodb.net/icyweb?retryWrites=true&w=majority')
+, (err,res) => {
+    if(err){
+        console.error(err);
+    }
+    else{
+        console.log('Database terhubung')
+    }
+})
+
 
 //routes
 const homeRoute = require('./routes/home');
